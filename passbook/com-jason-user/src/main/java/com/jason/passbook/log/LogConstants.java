@@ -43,5 +43,10 @@ public class LogConstants {
          * 用户获取评论
          */
         public static final String GET_FEEDBACK = "GetFeedback";
+
+        /**
+         * 创建用户
+         */
+        public static final String CREATE_USER = "CreateUser";
     }
 }

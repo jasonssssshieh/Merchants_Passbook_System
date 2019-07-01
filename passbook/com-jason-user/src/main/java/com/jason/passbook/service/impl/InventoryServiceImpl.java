@@ -1,11 +1,13 @@
 package com.jason.passbook.service.impl;
 
 import com.jason.passbook.constant.Constants;
+import com.jason.passbook.dao.MerchantsDao;
+import com.jason.passbook.entity.Merchants;
 import com.jason.passbook.mapper.PassTemplateRowMapper;
 import com.jason.passbook.service.IInventoryService;
+import com.jason.passbook.service.IUserPassService;
 import com.jason.passbook.utils.RowKeyGenUtil;
-import com.jason.passbook.vo.PassTemplate;
-import com.jason.passbook.vo.Response;
+import com.jason.passbook.vo.*;
 import com.spring4all.spring.boot.starter.hbase.api.HbaseTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.hadoop.hbase.client.Scan;
@@ -17,9 +19,8 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 库存服务 获取库存信息: 只返回用户没有领取的
@@ -29,13 +30,35 @@ import java.util.List;
 @Service
 public class InventoryServiceImpl implements IInventoryService{
 
+    @Autowired
+    private IUserPassService userPassService;
+
     //HBase客户端
     @Autowired
     private HbaseTemplate hbaseTemplate;
+    /*** 商户信息的Dao接口*/
+    @Autowired
+    private MerchantsDao merchantsDao;
 
     @Override
+    @SuppressWarnings("unchecked")
     public Response getInventoryInfo(Long userId) throws Exception {
-        return null;
+        Response allUserPass = userPassService.getUserAllPassInfo(userId);
+        List<PassInfo> passInfos = (List<PassInfo>) allUserPass.getData();
+
+        List<PassTemplate> excludeObject = passInfos.stream().map(
+                PassInfo::getPassTemplate
+        ).collect(Collectors.toList());//排除已经领取的
+
+        List<String> excludeIds = new ArrayList<>();
+        excludeObject.forEach(e->{
+            excludeIds.add(RowKeyGenUtil.genPassTemplateRowKey(e));
+        });
+
+        return new Response(new InventoryResponse(
+                userId,
+                buildPassTemplateInfo(getAvailablePassTemplate(excludeIds))
+        ));
     }
 
     /**
@@ -88,5 +111,38 @@ public class InventoryServiceImpl implements IInventoryService{
         }
 
         return availablePassTemplates;
+    }
+
+
+    /**
+     * 构造(可用)优惠券的信息
+     * @param availablePassTemplates {@link PassTemplate}
+     * @return {@link PassTemplateInfo}
+     */
+    private List<PassTemplateInfo> buildPassTemplateInfo(List<PassTemplate> availablePassTemplates){
+        Map<Integer, Merchants> merchantsMap = new HashMap<>();
+
+        List<Integer> merchantIds = availablePassTemplates.stream().map(
+                PassTemplate::getId
+        ).collect(Collectors.toList());
+
+        List<Merchants> merchants = merchantsDao.findByIdIn(merchantIds);
+        for (Merchants merchant : merchants) {
+            merchantsMap.put(merchant.getId(), merchant);
+        }
+
+        List<PassTemplateInfo> result = new ArrayList<>(availablePassTemplates.size());
+        for (PassTemplate passTemplate : availablePassTemplates) {
+            Merchants mc = merchantsMap.getOrDefault(passTemplate.getId(), null);
+            if(mc == null){
+                log.error("Merchants Error: {}", passTemplate.getId());
+                continue;
+            }
+            result.add(new PassTemplateInfo(
+                    passTemplate,
+                    mc//所属商户
+            ));
+        }
+        return result;
     }
 }
