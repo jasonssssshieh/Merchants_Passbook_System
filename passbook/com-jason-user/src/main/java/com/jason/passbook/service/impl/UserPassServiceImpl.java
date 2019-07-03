@@ -83,7 +83,7 @@ public class UserPassServiceImpl implements IUserPassService {
                         Constants.PassTable.FAMILY_I.getBytes(),
                         Constants.PassTable.CON_DATE.getBytes(),
                         CompareFilter.CompareOp.EQUAL,
-                        Bytes.toBytes(-1)//必须是未被使用的
+                        Bytes.toBytes("-1")//必须是未被使用的 这里-1要是string...不能是数字
                 )
         );
 
@@ -96,7 +96,7 @@ public class UserPassServiceImpl implements IUserPassService {
 
         //如果说这里我们找不到这样的一个pass或者说找到了多个重复的记录 那都是有错误的 这里就返回错误
         if(passes == null || passes.size() != 1){
-            log.error("UserUsePass Error: {}", JSON.toJSONString(pass));
+            log.error("UserUsePass Error: 没有找到对应的Pass信息或者有多个重复的Pass {}", JSON.toJSONString(pass));
             return Response.failure("UserUsePass Error");
         }
 
@@ -226,7 +226,7 @@ public class UserPassServiceImpl implements IUserPassService {
         //1. rowkey前缀过滤器, 找到特定用户的优惠券
         filters.add(new PrefixFilter(rowPrefix));
         //2. 基于列单元的过滤器, 找到未使用的优惠券
-        if(status == PassStatus.ALL) {
+        if(status != PassStatus.ALL) {
             filters.add(
                     //对hbase数据库中单列的值进行过滤
                     // 等于-1就是没有被消费, 不等于-1就是已经被消费了,

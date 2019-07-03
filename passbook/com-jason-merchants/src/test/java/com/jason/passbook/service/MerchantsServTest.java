@@ -33,8 +33,19 @@ public class MerchantsServTest {
     {"data":{"id":18},"errorMsg":""}
     但@Transactional了 那么我们在数据库里面找不到 因为会认为是test, 所以会自动回滚, 所以不会出现在数据库
      */
+
+    /**
+     * mysql> select * from merchants;
+     +----+--------+----------------+----------------------+------------+--------------+----------+
+     | id | name   | logo_url       | business_license_url | phone      | address      | is_audit |
+     +----+--------+----------------+----------------------+------------+--------------+----------+
+     | 19 | Jason  | www.jason.com  | www.jason.com        | 8008208820 | NEW YORK, NY |        1 |
+     | 20 | Google | www.google.com | www.google.com       | 123456789  | New York     |        1 |
+     | 21 | Test   | www.test.com   | www.test.com         | 8990293    | HongKong SAR |        1 |
+     +----+--------+----------------+----------------------+------------+--------------+----------+
+     */
     @Test
-    @Transactional
+    //@Transactional
     public void testCreateMerchantServ(){
 
         CreateMerchantsRequest request = new CreateMerchantsRequest();
@@ -46,6 +57,17 @@ public class MerchantsServTest {
 
         System.out.println(JSON.toJSONString(
                 merchantsService.createMerchants(request)
+        ));
+
+        CreateMerchantsRequest request2 = new CreateMerchantsRequest();
+        request2.setName("Test");
+        request2.setLogoUrl("www.test.com");
+        request2.setBusinessLicenseUrl("www.test.com");
+        request2.setPhone("8990293");
+        request2.setAddress("HongKong SAR");
+
+        System.out.println(JSON.toJSONString(
+                merchantsService.createMerchants(request2)
         ));
     }
 
@@ -63,20 +85,40 @@ public class MerchantsServTest {
     }
 
     @Test
+    //这个passtemplate最后被投放到hbase里面
     public void testDropPassTemplate(){
+        /*
         PassTemplate passTemplate = new PassTemplate();
         passTemplate.setId(20);
-        passTemplate.setTitle("title: Google");
-        passTemplate.setSummary("summary: Google");
-        passTemplate.setDesc("desc: Google");
+        //passTemplate.setTitle("title: Google");
+        passTemplate.setTitle("title: Uber");
+        passTemplate.setSummary("summary: Uber");
+        passTemplate.setDesc("desc: Uber");
         passTemplate.setLimit(10000L);
         passTemplate.setHasToken(false);
         passTemplate.setBackground(TemplateColor.VIOLET.getCode());
         passTemplate.setStart(DateUtils.addDays(new Date(), -10));
         passTemplate.setEnd(DateUtils.addDays(new Date(), 10));
+        */
+
+
+        PassTemplate passTemplate = new PassTemplate();
+        passTemplate.setId(21);
+        passTemplate.setTitle("title: TestCompany3");
+        passTemplate.setSummary("summary: TestCompany3");
+        passTemplate.setDesc("desc: TestCompany2");
+        passTemplate.setLimit(1000L);
+        passTemplate.setHasToken(true);
+        passTemplate.setBackground(TemplateColor.VIOLET.getCode());
+        passTemplate.setStart(DateUtils.addDays(new Date(), -20));
+        passTemplate.setEnd(DateUtils.addDays(new Date(), 10));
+
+
+
 
         System.out.println(JSON.toJSONString(
                 merchantsService.dropPassTemplate(passTemplate)
         ));
+
     }
 }

@@ -1,15 +1,11 @@
 package com.jason.passbook.vo;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * Controller统一响应 通用返回对象
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Response {
     /**
      * 错误码, 正确返回0
@@ -33,7 +29,6 @@ public class Response {
     public Response(Object data){
         this.data = data;
     }
-
     /**
      * 空响应 没有数据对象 的响应
      * @return
@@ -49,5 +44,12 @@ public class Response {
      */
     public static Response failure(String errorMsg){
         return new Response(-1, errorMsg, null);
+    }
+
+    public Response(){ }
+    public Response(Integer errorCode, String errorMsg, Object data){
+        this.errorCode = errorCode;
+        this.errorMsg = errorMsg;
+        this.data = data;
     }
 }

@@ -63,7 +63,7 @@ public class GainPassTemplateServiceImpl implements IGainPassTemplateService{
          * 2. 优惠券还没过期 还在可用时间范围内
          */
 
-        if(passTemplate.getLimit() != -1 && passTemplate.getLimit() <= 1){
+        if(passTemplate.getLimit() != -1 && passTemplate.getLimit() <= 0){
             //不能被领取
             log.error("PassTemplate Limit Max: {}", JSON.toJSONString(request.getPassTemplate()));
             return Response.failure("PassTemplate Limit Max.");
@@ -162,6 +162,7 @@ public class GainPassTemplateServiceImpl implements IGainPassTemplateService{
                         String.valueOf(merchantsId),
                         passTemplateId + Constants.USED_TOKEN_SUFFIX),
                 (token + "\n").getBytes(),
+                StandardOpenOption.CREATE,// 不存在的话就先创建,再追加
                 StandardOpenOption.APPEND//已追加的方式去写
         );
     }

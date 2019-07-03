@@ -1,5 +1,6 @@
 package com.jason.passbook.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.jason.passbook.constant.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -41,6 +42,8 @@ public class TokenUploadController {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    //merchants id: 21
+    //d03cce342b7047bc496f2a0fc1b1cf61
     @GetMapping("/upload")
     public String upload(){
         return "upload";
@@ -53,12 +56,13 @@ public class TokenUploadController {
                                   RedirectAttributes redirectAttributes){
         if(null == passTemplateId || file.isEmpty()){
             redirectAttributes.addFlashAttribute(
-                    "message", "passTemplateId is Null or file is empty!");
+                    "message", "passTemplateId is null or file is empty!");
             return "redirect:/uploadStatus";
         }
 
         try{
             File cur = new File(Constants.TOKEN_DIR + merchantsId);
+            System.out.println(JSON.toJSONString(cur));
              if(!cur.exists()){
                  log.info("Create File: {}", cur.mkdir());
              }

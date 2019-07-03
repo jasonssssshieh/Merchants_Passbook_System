@@ -42,6 +42,7 @@ public class PassRowMapper implements RowMapper<Pass>{
                 Bytes.toString(result.getValue(FAMILY_I, ASSIGNED_DATE)), pattern
         ));
 
+        pass.setRowKey(Bytes.toString(result.getRow()));
         return pass;
     }
 }

@@ -10,16 +10,17 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Table(name = "merchants")
 public class Merchants {
 
     /**
      * 商户id
      */
+    @Id
     @Basic
     @GeneratedValue
     @Column(name = "id", nullable = false)

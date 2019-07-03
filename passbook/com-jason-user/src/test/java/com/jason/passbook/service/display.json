@@ -1,0 +1,243 @@
+"创建用户的返回信息:"
+{
+  "data": {
+    "baseInfo": {
+      "age": 18,
+      "name": "jason_test20190702",
+      "sex": "m"
+    },
+    "id": 346057,
+    "otherInfo": {
+      "address": "San Francisco, California",
+      "phone": "10086"
+    }
+  },
+  "errorCode": 0,
+  "errorMsg": ""
+}
+
+"Inventory Service信息 也就是当前用户可用的优惠券信息"
+{
+  "data": {
+    "passTemplateInfos": [
+      {
+        "merchants": {
+          "address": "HongKong SAR",
+          "businessLicenseUrl": "www.test.com",
+          "id": 21,
+          "isAudit": true,
+          "logoUrl": "www.test.com",
+          "name": "Test",
+          "phone": "8990293"
+        },
+        "passTemplate": {
+          "background": 7,
+          "desc": "desc: TestCompany",
+          "end": 1566360000000,
+          "hasToken": false,
+          "id": 21,
+          "limit": 1000,
+          "start": 1560312000000,
+          "summary": "summary: TestCompany",
+          "title": "title: TestCompany"
+        }
+      },
+      {
+        "merchants": {
+          "address": "New York",
+          "businessLicenseUrl": "www.google.com",
+          "id": 20,
+          "isAudit": true,
+          "logoUrl": "www.google.com",
+          "name": "Google",
+          "phone": "123456789"
+        },
+        "passTemplate": {
+          "background": 7,
+          "desc": "desc: Facebook",
+          "end": 1563681600000,
+          "hasToken": true,
+          "id": 20,
+          "limit": 10000,
+          "start": 1560916800000,
+          "summary": "summary: Facebook",
+          "title": "title: Facebook"
+        }
+      },
+      {
+        "merchants": {
+          "address": "HongKong SAR",
+          "businessLicenseUrl": "www.test.com",
+          "id": 21,
+          "isAudit": true,
+          "logoUrl": "www.test.com",
+          "name": "Test",
+          "phone": "8990293"
+        },
+        "passTemplate": {
+          "background": 7,
+          "desc": "desc: TestCompany2",
+          "end": 1562904000000,
+          "hasToken": true,
+          "id": 21,
+          "limit": 1000,
+          "start": 1560312000000,
+          "summary": "summary: TestCompany3",
+          "title": "title: TestCompany3"
+        }
+      },
+      {
+        "merchants": {
+          "address": "New York",
+          "businessLicenseUrl": "www.google.com",
+          "id": 20,
+          "isAudit": true,
+          "logoUrl": "www.google.com",
+          "name": "Google",
+          "phone": "123456789"
+        },
+        "passTemplate": {
+          "background": 7,
+          "desc": "desc: Google",
+          "end": 1562817600000,
+          "hasToken": false,
+          "id": 20,
+          "limit": 10000,
+          "start": 1561089600000,
+          "summary": "summary: Google",
+          "title": "title: Google - 2019-02-13"
+        }
+      },
+      {
+        "merchants": {
+          "address": "HongKong SAR",
+          "businessLicenseUrl": "www.test.com",
+          "id": 21,
+          "isAudit": true,
+          "logoUrl": "www.test.com",
+          "name": "Test",
+          "phone": "8990293"
+        },
+        "passTemplate": {
+          "background": 7,
+          "desc": "desc: TestCompany2",
+          "end": 1566360000000,
+          "hasToken": false,
+          "id": 21,
+          "limit": 1000,
+          "start": 1560312000000,
+          "summary": "summary: TestCompany2",
+          "title": "title: TestCompany2"
+        }
+      }
+    ],
+    "userId": 346057
+  },
+  "errorCode": 0,
+  "errorMsg": ""
+}
+
+"获取passtemplate结果: testGainPassTemplate"
+2019-07-02 23:30:15.287  INFO 40677 --- [           main] com.jason.passbook.utils.RowKeyGenUtil   : genPassTemplateRowKey: 21_title: TestCompany3, d03cce342b7047bc496f2a0fc1b1cf61
+{"errorCode":0,"errorMsg":""}
+领取了token-3
+
+
+"用户使用优惠券服务test:"
+"用户当前可以使用的优惠券"
+{
+"data": [
+{
+"merchants": {
+"address": "HongKong SAR",
+"businessLicenseUrl": "www.test.com",
+"id": 21,
+"isAudit": true,
+"logoUrl": "www.test.com",
+"name": "Test",
+"phone": "8990293"
+},
+"pass": {
+"assignedDate": 1562040000000,
+"templateId": "d03cce342b7047bc496f2a0fc1b1cf61",
+"token": "token-3",
+"userId": 346057
+},
+"passTemplate": {
+"background": 7,
+"desc": "desc: TestCompany2",
+"end": 1562904000000,
+"hasToken": true,
+"id": 21,
+"limit": 999,
+"start": 1560312000000,
+"summary": "summary: TestCompany3",
+"title": "title: TestCompany3"
+}
+}
+],
+"errorCode": 0,
+"errorMsg": ""
+}
+
+"用户当前已经使用的优惠券:"
+{"data":[],"errorCode":0,"errorMsg":""}
+
+"testGetUserAllPassInfo 用户当前全部的优惠券: "
+{
+"data": [
+{
+"merchants": {
+"address": "HongKong SAR",
+"businessLicenseUrl": "www.test.com",
+"id": 21,
+"isAudit": true,
+"logoUrl": "www.test.com",
+"name": "Test",
+"phone": "8990293"
+},
+"pass": {
+"assignedDate": 1562040000000,
+"templateId": "d03cce342b7047bc496f2a0fc1b1cf61",
+"token": "token-3",
+"userId": 346057
+},
+"passTemplate": {
+"background": 7,
+"desc": "desc: TestCompany2",
+"end": 1562904000000,
+"hasToken": true,
+"id": 21,
+"limit": 999,
+"start": 1560312000000,
+"summary": "summary: TestCompany3",
+"title": "title: TestCompany3"
+}
+}
+],
+"errorCode": 0,
+"errorMsg": ""
+}
+
+
+"用户使用优惠券:"
+{"errorCode":0,"errorMsg":""}
+
+{
+"data": [
+{
+"comment": "创建优惠券评论成功",
+"templateId": "d03cce342b7047bc496f2a0fc1b1cf61",
+"type": "pass",
+"userId": 346057
+},
+{
+"comment": "创建app评论成功",
+"templateId": "-1",
+"type": "app",
+"userId": 346057
+}
+],
+"errorCode": 0,
+"errorMsg": ""
+}

@@ -105,7 +105,7 @@ public class InventoryServiceImpl implements IInventoryService{
             }
             //必须依然有效
             if(curTime.getTime() >= validPassTemplate.getStart().getTime()
-                    && curTime.getTime() <= validPassTemplate.getStart().getTime()){
+                    && curTime.getTime() <= validPassTemplate.getEnd().getTime()){
                 availablePassTemplates.add(validPassTemplate);
             }
         }

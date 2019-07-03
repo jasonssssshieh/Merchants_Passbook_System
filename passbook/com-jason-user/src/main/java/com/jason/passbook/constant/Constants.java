@@ -13,7 +13,7 @@ public class Constants {
     /**
      * token文件存储目录
      */
-    public static final String TOKEN_DIR = "/tmp/token/";
+    public static final String TOKEN_DIR = "/Users/Jason/imooc/passbook/tmp/token/";
 
     /**
      * 已使用的token文件名后缀
