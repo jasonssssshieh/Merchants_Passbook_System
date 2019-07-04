@@ -9,12 +9,13 @@ spring:
       hibernate.format_sql: true
     open-in-view: false
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/passbook?autoReconnect=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/passbook?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=GMT
     username: root
     password: JasonJason
     driver-class-name: com.mysql.cj.jdbc.Driver
     tomcat:
       max-active: 4
+      max-idle: 4
       min-idle: 2
       initial-size: 2
   kafka:

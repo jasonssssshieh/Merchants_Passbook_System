@@ -1,0 +1,23 @@
+需要启动的服务:
+    hbase: 我们会往hbase里面写入数据: 例如优惠券的数据, 用户使用的优惠券,反馈信息等
+    mysql: 我们会在mysql里面存储商户的信息
+    kafka: 用来连接商户子系统和用户子系统, 商户投放优惠券,
+           会首先投放到kafka topic里面, 用户端会进行监听,然后监听之后会取出kafka消息进行反序列化, 去写入HBase
+    redis: 我们将优惠券的token存储于redis中
+
+需要清空的数据:
+    1. HBase的四张表: truncate 'pb:passtemplate',  truncate 'pb:pass',  truncate 'pb:user',  truncate 'pb:feedback'
+    2. mysql商户数据: use passbook; delete from merchants;
+    3. /tmp/token/ 下面的优惠券token数据: in the tmp folder: rm -rf *
+    4. redis 中的数据: in redis-cli: flushall; 验证: keys *
+
+1. 创建商户:
+    POST: 127.0.0.1:9527/merchants/create
+    header: token/jason-passbook-merchants
+    {
+        "name" : "shieh",
+        "logoUrl":"www.google.com",
+        "businessLicenseUrl" : "www.google.com",
+        "phone" : "1234567890",
+        "address" : "New York, NY"
+    }

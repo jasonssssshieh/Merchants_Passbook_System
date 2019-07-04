@@ -1,0 +1,107 @@
+1. 上传优惠券token
+   GET: 127.0.0.1:9528/upload
+   这个是需要直接在网页打开, 没法用postman
+   merchantsId - 22
+   passTemplate Id (hasToken = true): cae7971738f8d9155c2b5a0b8926f19d
+   (--You successfully uploaded 'token.txt'--)
+
+2. 创建用户 -- 用户id: 407020
+   POST 127.0.0.1:9528/passbook/createuser
+   {
+        "baseInfo": {
+            "name" : "iJason",
+            "age" : 10,
+            "sex" : "m"
+        },
+        "otherInfo" : {
+            "phone" : "1234567890",
+            "address" : "LA, California"
+        }
+   }
+
+   ---得到的信息:
+   {
+       "errorCode": 0,
+       "errorMsg": "",
+       "data": {
+           "id": 407020,
+           "baseInfo": {
+               "name": "iJason",
+               "age": 10,
+               "sex": "m"
+           },
+           "otherInfo": {
+               "phone": "1234567890",
+               "address": "LA, California"
+           }
+       }
+   }
+
+3. 获取库存信息
+   GET 127.0.0.1:9528/passbook/inventoryinfo?userId=407020
+
+4. 获取优惠券 --获取hasToken = true的优惠券
+    POST 127.0.0.1:9528/passbook/gainpasstemplate
+    {
+        "userId" : 407020,
+        "passTemplate": {
+            "id" : 22,
+            "title" : "shieh优惠券-2",
+            "hasToken" : true
+        }
+    }
+
+    --获取了token-2
+
+
+5. userpassinfo 用户(未使用)的pass的信息
+    GET 127.0.0.1:9528/passbook/userpassinfo?userId=407020
+
+6. userUsedpassinfo 用户已经使用的pass的信息
+    GET 127.0.0.1:9528/passbook/userusedpassinfo?userId=407020
+
+
+7. userUsepassinfo 用户使用pass
+    POST 127.0.0.1:9528/passbook/userusepass
+    {
+        "userId" : 407020,
+        "templateId" : "cae7971738f8d9155c2b5a0b8926f19d"
+    }
+
+8. 创建评论信息
+    POST 127.0.0.1:9528/passbook/createfeedback
+    {
+        "userId":407020,
+        "type" : "app",
+        "templateId" : -1,
+        "comment" : "[创建]针对app的评论"
+    }
+
+    {
+        "userId":407020,
+        "type" : "pass",
+        "templateId" : "cae7971738f8d9155c2b5a0b8926f19d",
+        "comment" : "[创建]针对passtemplate的评论"
+    }
+
+9. 查看评论信息
+    GET 127.0.0.1:9528/passbook/getfeedback?userId=407020
+
+    {
+        "errorCode": 0,
+        "errorMsg": "",
+        "data": [
+            {
+                "userId": 407020,
+                "type": "pass",
+                "templateId": "cae7971738f8d9155c2b5a0b8926f19d",
+                "comment": "[创建]针对passtemplate的评论"
+            },
+            {
+                "userId": 407020,
+                "type": "app",
+                "templateId": "-1",
+                "comment": "[创建]针对app的评论"
+            }
+        ]
+    }

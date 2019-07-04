@@ -90,7 +90,7 @@ public class PassbookController {
      */
     @ResponseBody
     @PostMapping("/userusepass")
-    Response userUsePass(Pass pass){
+    Response userUsePass(@RequestBody Pass pass){
         LogGenerator.genLog(
                 httpServletRequest,
                 pass.getUserId(),

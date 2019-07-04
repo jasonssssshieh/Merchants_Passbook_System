@@ -15,8 +15,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class PassTemplateInfo extends PassTemplate{
+//@EqualsAndHashCode(callSuper = true)
+//没有必要继承,因为我们已经有了PassTemplate这个属性了
+public class PassTemplateInfo /*extends PassTemplate*/{
     /**
      * 优惠券模板
      */

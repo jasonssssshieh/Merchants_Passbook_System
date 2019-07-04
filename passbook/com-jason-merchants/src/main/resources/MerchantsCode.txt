@@ -1,0 +1,71 @@
+需要启动的服务:
+    hbase: 我们会往hbase里面写入数据: 例如优惠券的数据, 用户使用的优惠券,反馈信息等
+    mysql: 我们会在mysql里面存储商户的信息
+    kafka: 用来连接商户子系统和用户子系统, 商户投放优惠券,
+           会首先投放到kafka topic里面, 用户端会进行监听,然后监听之后会取出kafka消息进行反序列化, 去写入HBase
+    redis: 我们将优惠券的token存储于redis中
+
+需要清空的数据:
+    1. HBase的四张表: truncate 'pb:passtemplate',  truncate 'pb:pass',  truncate 'pb:user',  truncate 'pb:feedback'
+    2. mysql商户数据: use passbook; delete from merchants;
+    3. /tmp/token/ 下面的优惠券token数据: in the tmp folder: rm -rf *
+    4. redis 中的数据: in redis-cli: flushall; 验证: keys *
+
+1. 创建商户: -- 商户ID: 22
+    POST: 127.0.0.1:9527/merchants/create
+    header: token/jason-passbook-merchants
+    {
+        "name" : "shieh",
+        "logoUrl":"www.google.com",
+        "businessLicenseUrl" : "www.google.com",
+        "phone" : "1234567890",
+        "address" : "New York, NY"
+    }
+
+2. 查看商户信息
+    GET: 127.0.0.1:9527/merchants/22
+    header: token/jason-passbook-merchants
+
+    {
+        "errorCode": null,
+        "errorMsg": "",
+        "data": {
+            "id": 22,
+            "name": "shieh",
+            "logoUrl": "www.google.com",
+            "businessLicenseUrl": "www.google.com",
+            "phone": "1234567890",
+            "address": "New York, NY",
+            "isAudit": true
+        }
+    }
+
+3. 商户投放优惠券
+    POST: 127.0.0.1:9527/merchants/drop
+    header: token/jason-passbook-merchants
+
+    template id: bbe1d41a43e3fc91bba54afb6853107b
+    {
+        "background" : 1,
+        "desc" : "shieh优惠券-1",
+        "end" : "2019-08-31",
+        "hasToken" : false,
+        "id" : 22,
+        "limit" : 1000,
+        "start" : "2019-07-01",
+        "summary" : "优惠券简介"
+        "title" : "shieh优惠券-1"
+    }
+
+    template id: cae7971738f8d9155c2b5a0b8926f19d
+    {
+        "background" : 1,
+        "desc" : "shieh优惠券-2",
+        "end" : "2019-08-31",
+        "hasToken" : true,
+        "id" : 22,
+        "limit" : 1000,
+        "start" : "2019-07-01",
+        "summary" : "优惠券简介",
+        "title" : "shieh优惠券-2"
+    }
